@@ -1,5 +1,5 @@
 {
-  "name": "probability-netflix-strangerthings-static",
+  "name": "probability-netflix-static",
   "version": "1.0.0",
   "private": true,
   "type": "module",
@@ -11,10 +11,6 @@
     "preview": "vp preview"
   },
   "dependencies": {
-    "@fontsource/bebas-neue": "^5.3.0",
-    "@fontsource/poppins": "^5.3.0",
-    "gsap": "^3.15.0",
-    "pdfjs-dist": "^6.4.299",
     "vue": "^3.5.33",
     "zod": "^4.4.3"
   },

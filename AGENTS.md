@@ -1,7 +1,6 @@
 # Agent notes
 
-Static site for the Stranger Things Day Developer Contest, hosted on Netflix's
-static microsite infrastructure (S3 + CloudFront). Read README.md and
+Static site skeleton for Netflix's static microsite infrastructure (S3 + CloudFront). Read README.md and
 SECURITY.md first.
 
 ## Toolchain: Vite+ (`vp`)
@@ -16,7 +15,7 @@ SECURITY.md first.
 
 - **Static only.** No server code, API, database, auth or Docker in this repo.
   Netflix scans it every 24 h; anything here must be needed by the site.
-- **Content vs. code.** Copy, fields, endpoints and SEO live in
+- **Content vs. code.** Copy, endpoints and SEO live in
   `content/config.json` (validated by `src/site/schema.ts` — add fields there),
   looks in `content/theme.css`. Change code only to change behavior.
 - **Security.** No secrets, no third-party scripts/fonts/trackers beyond what
@@ -35,9 +34,7 @@ SECURITY.md first.
 
 - Every animation asked for is done with [GSAP](https://gsap.com/docs/v3/) —
   no CSS `@keyframes`/transition-based animations, Web Animations API or other
-  animation libraries. The CSS animations already in the site (the loader's
-  spinner, `moveUpDown`, the theme's transitions) stay as they are unless a
-  change to them is asked for.
+  animation libraries.
 - Install it from npm (`vp add gsap`) so it is bundled into the site's own
   assets: never from a CDN (no third-party scripts, see Security).
 - Animate only what was asked, the way it was asked: no extra effects,

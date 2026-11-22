@@ -15,14 +15,22 @@ const withProd = (patch: Partial<SiteConfig["seo"]> = {}): SiteConfig => ({
 });
 
 describe("buildHead", () => {
-  test("title, description, favicon and the CSP are always there", () => {
-    const head = buildHead({ config: base, env: "test", asset });
-    expect(head).toContain("<title>Stranger Things Day Developer Contest</title>");
-    expect(head).toContain(
-      '<meta name="description" content="Build your own Stranger Things games and items',
-    );
+  test("title, description, favicon and the CSP", () => {
+    const head = buildHead({
+      config: withProd({ title: "T", description: "D", favicon: "img/favicon.png" }),
+      env: "test",
+      asset,
+    });
+    expect(head).toContain("<title>T</title>");
+    expect(head).toContain('<meta name="description" content="D" />');
     expect(head).toContain('<link rel="icon" href="/assets/favicon.png" />');
     expect(head).toContain('http-equiv="Content-Security-Policy"');
+  });
+
+  test("the title falls back to the site's name", () => {
+    expect(buildHead({ config: base, env: "test", asset })).toContain(
+      `<title>${base.name}</title>`,
+    );
   });
 
   test("test builds are noindex; prod builds are not", () => {
@@ -32,7 +40,12 @@ describe("buildHead", () => {
 
   test("prod with siteUrl: canonical, og:url and absolute share image", () => {
     const head = buildHead({
-      config: withProd({ image: "img/share.jpg", imageWidth: 1200, imageHeight: 630 }),
+      config: withProd({
+        image: "img/share.jpg",
+        imageWidth: 1200,
+        imageHeight: 630,
+        twitterSite: "@netflix",
+      }),
       env: "prod",
       asset,
     });
@@ -67,11 +80,11 @@ describe("buildHead", () => {
 });
 
 describe("contentSecurityPolicy", () => {
-  test("only this site, the v1 bundle's origin and the Probability API", () => {
-    const csp = contentSecurityPolicy(base, "test");
+  test("only this site", () => {
+    const csp = contentSecurityPolicy();
     expect(csp).toContain("default-src 'self'");
-    expect(csp).toContain("script-src 'self' https://universal-form.onprobability.com;");
-    expect(csp).toContain("connect-src 'self' https://api.helloprobability.io;");
+    expect(csp).toContain("script-src 'self';");
+    expect(csp).toContain("connect-src 'self';");
     expect(csp).toContain("object-src 'none'");
     expect(csp).not.toContain("unsafe-eval");
     expect(csp).not.toMatch(/script-src[^;]*unsafe-inline/);
